@@ -1,5 +1,5 @@
-import express from 'express';
-import path from 'path';
+import express from "express";
+import path from "path";
 
 interface Options {
     port: number;
@@ -7,28 +7,34 @@ interface Options {
 }
 
 export class Server {
-
     private app = express();
     private readonly port: number;
     private readonly publicPath: string;
 
     constructor(options: Options) {
-        const { port, publicPath } = options;  
+        const { port, publicPath } = options;
         this.port = port;
         this.publicPath = publicPath;
     }
-    
+
     async start() {
         //* Middlewares
-    
+
         //* Public folder
         this.app.use(express.static(this.publicPath));
 
-        this.app.get('*', (_req, res) => {
-            const indexPath = path.join(__dirname, `../../${this.publicPath}/index.html`);
+        //* SPA
+        this.app.get("*", (_req, res) => {
+            const indexPath = path.join(
+                __dirname,
+                `../../${this.publicPath}/index.html`,
+            );
             res.sendFile(indexPath);
         });
 
-        this.app.listen(this.port, () => console.log(`Server running on port 3000`))
+        this.app.listen(
+            this.port,
+            () => console.log(`Server running on port 3000`),
+        );
     }
 }
