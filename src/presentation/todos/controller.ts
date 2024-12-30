@@ -16,7 +16,7 @@ export class TodosController {
         const id = +req.params.id;
 
         if (isNaN(id)) {
-            res.status(400).json({ error: 'ID argument is not a number' });
+            res.status(400).json({ error: "ID argument is not a number" });
             return;
         }
 
@@ -28,9 +28,9 @@ export class TodosController {
     public createTodo = (req: Request, res: Response) => {
         const { text } = req.body;
         if (!text) {
-            res.status(400).json({ error: 'Text property is required'})
+            res.status(400).json({ error: "Text property is required" });
             return;
-        };
+        }
         const newTodo = {
             id: todos.length + 1,
             text: text as string,
@@ -38,5 +38,5 @@ export class TodosController {
         };
         todos.push(newTodo);
         res.json(newTodo);
-    }
+    };
 }
