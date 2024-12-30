@@ -62,4 +62,22 @@ export class TodosController {
 
         res.json(todo);
     };
+
+    public deleteTodo = (req: Request, res: Response) => {
+        const id = +req.params.id;
+        if (isNaN(id)) {
+            res.status(400).json({ error: "ID argument is not a number" });
+            return;
+        }
+
+        const indexTodo = todos.findIndex((todo) => todo.id === id);
+        if (indexTodo == null) {
+            res.status(404).json({ error: `TODO with id ${id} not found` });
+            return;
+        }
+        const todo = todos[indexTodo];
+        todos.splice(indexTodo, 1);
+
+        res.json(todo);
+    }
 }
