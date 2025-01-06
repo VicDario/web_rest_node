@@ -5,7 +5,7 @@ import compression from "compression";
 interface Options {
     port: number;
     routes: Router;
-    publicPath: string;
+    publicPath?: string;
 }
 
 export class Server {
@@ -17,7 +17,7 @@ export class Server {
     constructor(options: Options) {
         const { port, publicPath, routes } = options;
         this.port = port;
-        this.publicPath = publicPath;
+        this.publicPath = publicPath ?? 'public';
         this.routes = routes;
     }
 
