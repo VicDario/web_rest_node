@@ -17,7 +17,7 @@ export class UpdateTodoDto {
     static create(props: { [key: string]: any }): [string?, UpdateTodoDto?] {
         const { id, text, completedAt } = props;
 
-        if (!id || !isNaN(id)) return ["ID must be a valid number"];
+        if (!id || isNaN(id)) return ["ID must be a valid number"];
 
         let newCompletedAt;
         if (completedAt) {
