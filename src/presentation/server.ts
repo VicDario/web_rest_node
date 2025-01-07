@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import path from "path";
 import compression from "compression";
+import { ErrorMiddleware } from "./middlewares/error.middleware";
 
 interface Options {
     port: number;
@@ -33,6 +34,8 @@ export class Server {
 
         //* Routes
         this.app.use(this.routes);
+
+        this.app.use(ErrorMiddleware.middleware)
 
         //* SPA
         this.app.get("*", (_req, res) => {
