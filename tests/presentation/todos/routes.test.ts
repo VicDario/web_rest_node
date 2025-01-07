@@ -15,10 +15,10 @@ describe("Todo route testing", () => {
 
     beforeEach(async () => {
         await prisma.todo.deleteMany();
-    })
+    });
 
-    const todo = { text: 'Todo one', completedAt: new Date() };
-    const todoTwo = { text: 'Todo two'};
+    const todo = { text: "Todo one", completedAt: new Date() };
+    const todoTwo = { text: "Todo two" };
 
     test("should return TODOs api/todos", async () => {
         await prisma.todo.createMany({
@@ -33,7 +33,7 @@ describe("Todo route testing", () => {
         expect(response.body.length).toBe(2);
         expect(response.body[0].text).toBe(todo.text);
         expect(response.body[1].text).toBe(todoTwo.text);
-    }); 
+    });
 
     test("should return a TODO /api/todo/:id", async () => {
         const savedTodo = await prisma.todo.create({ data: todo });
@@ -44,7 +44,7 @@ describe("Todo route testing", () => {
 
         expect(response.body).toMatchObject({
             ...savedTodo,
-            completedAt: savedTodo.completedAt?.toISOString()
+            completedAt: savedTodo.completedAt?.toISOString(),
         });
     });
 
@@ -53,8 +53,10 @@ describe("Todo route testing", () => {
         const response = await request(testServer.app)
             .get(`/api/todos/${todoId}`)
             .expect(400);
-            
-        expect(response.body).toEqual({ error: `TODO with ID ${todoId} not found`});
+
+        expect(response.body).toEqual({
+            error: `TODO with ID ${todoId} not found`,
+        });
     });
 
     test("should return a new TODO api/todos", async () => {
@@ -65,8 +67,8 @@ describe("Todo route testing", () => {
 
         expect(response.body).toEqual({
             id: expect.any(Number),
-            text: todo.text
-        })
+            text: todo.text,
+        });
     });
 
     test("should return an error if body is not valid api/todos", async () => {
@@ -75,7 +77,7 @@ describe("Todo route testing", () => {
             .send({})
             .expect(400);
 
-        expect(response.body).toEqual({error: expect.any(String) })
+        expect(response.body).toEqual({ error: expect.any(String) });
     });
 
     test("should return an error if text is empty api/todos", async () => {
@@ -84,6 +86,6 @@ describe("Todo route testing", () => {
             .send({ text: "" })
             .expect(400);
 
-        expect(response.body).toEqual({error: expect.any(String) })
+        expect(response.body).toEqual({ error: expect.any(String) });
     });
-})
+});
