@@ -2,6 +2,7 @@ import exp from "constants";
 import { prisma } from "../../../src/data/postgres";
 import { testServer } from "../../test-server";
 import request from "supertest";
+import { text } from "stream/consumers";
 
 describe("Todo route testing", () => {
     beforeAll(async () => {
@@ -54,5 +55,35 @@ describe("Todo route testing", () => {
             .expect(400);
             
         expect(response.body).toEqual({ error: `TODO with ID ${todoId} not found`});
+    });
+
+    test("should return a new TODO api/todos", async () => {
+        const response = await request(testServer.app)
+            .post("/api/todos")
+            .send(todo)
+            .expect(201);
+
+        expect(response.body).toEqual({
+            id: expect.any(Number),
+            text: todo.text
+        })
+    });
+
+    test("should return an error if body is not valid api/todos", async () => {
+        const response = await request(testServer.app)
+            .post("/api/todos")
+            .send({})
+            .expect(400);
+
+        expect(response.body).toEqual({error: expect.any(String) })
+    });
+
+    test("should return an error if text is empty api/todos", async () => {
+        const response = await request(testServer.app)
+            .post("/api/todos")
+            .send({ text: "" })
+            .expect(400);
+
+        expect(response.body).toEqual({error: expect.any(String) })
     });
 })
